@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, LogOut, User } from "lucide-react"
+import { Bell, Search, LogOut, User, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -16,10 +16,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 import { getStoredAdmin, logout } from "@/lib/auth"
+import { useSidebar } from "@/components/providers/sidebar-provider"
 import type { Admin } from "@/lib/types"
 
 export function Topbar() {
   const [admin, setAdmin] = useState<Admin | null>(null)
+  const { toggle } = useSidebar()
 
   useEffect(() => {
     setAdmin(getStoredAdmin())
@@ -27,11 +29,27 @@ export function Topbar() {
 
   return (
     <div className="flex h-16 items-center justify-between border-b border-border bg-card px-6">
-      {/* Search */}
+      {/* Mobile Menu Button & Search */}
       <div className="flex items-center gap-4 flex-1 max-w-md">
+        {/* Mobile menu button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={toggle}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." className="pl-9 bg-background" />
+          <Input 
+            type="search" 
+            placeholder="Search..." 
+            className="pl-9 bg-background hidden sm:block" 
+          />
+          <Button variant="ghost" size="icon" className="sm:hidden">
+            <Search className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 

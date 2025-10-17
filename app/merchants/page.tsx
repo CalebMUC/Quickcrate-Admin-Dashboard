@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -9,9 +10,10 @@ import { MerchantDetailsDialog } from "@/components/merchants/merchant-details-d
 import { MerchantFormDialog } from "@/components/merchants/merchant-form-dialog"
 import { mockMerchants } from "@/lib/mock-data"
 import type { Merchant } from "@/lib/types"
-import { Plus, Search } from "lucide-react"
+import { Plus, Search, UserPlus } from "lucide-react"
 
 export default function MerchantsPage() {
+  const router = useRouter()
   const [merchants, setMerchants] = useState<Merchant[]>(mockMerchants)
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
@@ -77,15 +79,24 @@ export default function MerchantsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Merchant Management</h1>
           <p className="text-muted-foreground mt-1">Manage and monitor all platform merchants</p>
         </div>
-        <Button
-          onClick={() => {
-            setEditingMerchant(null)
-            setFormOpen(true)
-          }}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Merchant
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setEditingMerchant(null)
+              setFormOpen(true)
+            }}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Quick Add
+          </Button>
+          <Button
+            onClick={() => router.push("/merchants/new")}
+          >
+            <UserPlus className="mr-2 h-4 w-4" />
+            New Registration
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
